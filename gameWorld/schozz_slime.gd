@@ -7,6 +7,8 @@ var player_area = false
 var damage 
 var player
 
+@onready var healthbar = $HealthBar
+
 func _ready():
 	dead = false
 	
