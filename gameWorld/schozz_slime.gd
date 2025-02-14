@@ -11,6 +11,7 @@ var player
 
 func _ready():
 	dead = false
+	healthbar._init_health(health)
 	
 func _physics_process(delta):
 	if !dead:

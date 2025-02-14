@@ -1,51 +1,20 @@
-extends CharacterBody2D
+extends Line2D
 
-var speed = 50
-var health = 100
-var dead = false
-var player_area = false
-var damage 
-var player
+var prev_pos: Vector2 = Vector2.ZERO
+var player_radius: float = 0.0
 
+# Setting the texture of the trail so that it's visible on screen
 func _ready():
-	dead = false
-	
-func _physics_process(delta):
-	if !dead:
-		$Scent_Detection/CollisionShape2D.disabled = false
-		
-		if player_area: # If the player is in the area, the enemy will detect the scent and chase the player
-			position += (player.position - position) / speed
-			$AnimatedSprite2D.play("move")
-		else:
-			$AnimatedSprite2D.play("idle")
-	
-	if dead:
-		$Scent_Detection/CollisionShape2D.disabled = true
+	var texture = get_parent().texture
+	prev_pos = get_parent().global_position
 
-func _on_scent_detection_body_entered(body):
-	if body.has_method("player"):
-		player_area = true
-		player = body
-		
-func _on_scent_detection_body_exited(body):
-	if body.has_method("player"):
-		player_area = false
-		
-func _on_hitbox_area_entered(area): # Tracking the damage done by the arrow
-	var damage
-	if area.has_method("arrow_deal_damage"):
-		damage = 50
-		take_damage(damage)
-		
-func take_damage(damage):
-	health = health - damage
-	if health <= 0 and !dead:
-		death()
-		
-func death(): # For when the player kills the enemy
-	dead = true
-	$AnimatedSprite2D.play("death")
-	await get_tree().create_timer(1).timeout
-	queue_free()
-
+# The process function sets the position and direction of the trail
+func _process(delta):
+	var current_position = get_parent().global_position
+	var direction = (current_position - prev_pos).normalized()
+	add_point(current_position - player_radius * direction)
+	
+	# Setting the size of the trail
+	if points.size() > 30:
+		remove_point(0)
+	prev_pos = current_position
