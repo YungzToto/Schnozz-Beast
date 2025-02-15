@@ -18,7 +18,11 @@ Godot 4 (Game Engine), GDScript (an in built language within Godot 4 that is sim
 
 -> Researched articles on ML agents in Godot and how they're used and what reinforcement learning is. I also worked on how I could implement the scent trail mechanics from the project description into the game as well.
 
-## Potentially Useful Links
+## Useful Links
 -> https://abitawake.com/news/articles/enemy-ai-chasing-a-player-without-navigation2d-or-a-star-pathfinding
 
 -> https://github.com/edbeeching/godot_rl_agents/blob/main/README.md
+
+-> https://huggingface.co/learn/deep-rl-course/en/unitbonus3/godotrl
+
+-> https://godotagents.com
