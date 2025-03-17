@@ -8,12 +8,17 @@ var damage
 var player
 
 @onready var healthbar = $HealthBar
+@onready var score_manager = %ScoreManager
+@onready var ai_controller: Node2D = $AIController2D
 
 func _ready():
 	dead = false
 	healthbar._init_health(health)
 	
 func _physics_process(delta):
+        velocity.x = ai_controller.move.x
+	velocity.y = ai_controller.move.y
+
 	if !dead:
 		$Scent_Detection/CollisionShape2D.disabled = false
 		
@@ -38,13 +43,15 @@ func _on_scent_detection_body_exited(body):
 func _on_hitbox_area_entered(area): # Tracking the damage done by the arrow
 	var damage
 	if area.has_method("arrow_deal_damage"):
-		damage = 50
+		damage = 20
 		take_damage(damage)
 		
 func take_damage(damage):
 	health = health - damage
 	if health <= 0 and !dead:
 		death()
+		print("+1 ENEMY KILLED!")
+		score_manager.add_point()
 		
 func death(): # For when the player kills the enemy
 	dead = true
